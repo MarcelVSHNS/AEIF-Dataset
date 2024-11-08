@@ -165,7 +165,7 @@ def disparity_to_depth(disparity_map: np.ndarray, camera_info: Union[Camera, Cam
     return depth_map
 
 
-def save_image(image: Image, output_path: str, suffix: str = '', format: str = 'PNG'):
+def save_image(image: Image, output_path: str, suffix: str = '', format: str = 'JPEG'):
     """Save an image to disk in JPEG or PNG format.
 
     Saves an `Image` object to disk in the specified format (JPEG or PNG).
@@ -177,19 +177,10 @@ def save_image(image: Image, output_path: str, suffix: str = '', format: str = '
         suffix (str, optional): Optional suffix to be added to the image filename. Defaults to ''.
         format (str, optional): Format in which to save the image ('JPEG' or 'PNG'). Defaults to 'PNG'.
     """
-    # Set the file extension based on format
     ext = 'jpg' if format.upper() == 'JPEG' else 'png'
     output_file = os.path.join(output_path, f'{image.get_timestamp()}{suffix}.{ext}')
-
-    # Save as JPEG or PNG based on format
-    if format.upper() == 'JPEG':
-        # Save as JPEG directly
-        image.save(output_file, 'JPEG')
-    elif format.upper() == 'PNG':
-        # Save as PNG
-        image.save(output_file, 'PNG')
-    else:
-        raise ValueError("Unsupported format. Please use 'JPEG' or 'PNG'.")
+    with open(output_file, 'wb') as file:
+        file.write(image.image)
 
 
 def save_all_images_in_frame(frame, output_path: str, create_subdir: bool = False, use_raw: bool = False):

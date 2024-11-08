@@ -233,7 +233,7 @@ class Image(TimestampMixin):
         image (Optional[PilImage]): The actual image data.
     """
 
-    def __init__(self, image: PilImage = None, timestamp: Optional[Decimal] = None):
+    def __init__(self, image: bytes = b"", timestamp: Optional[Decimal] = None):
         """Initialize an Image object with image data and a timestamp.
 
         Args:
@@ -287,8 +287,7 @@ class Image(TimestampMixin):
         img_instance = cls()
         img_instance.timestamp = Decimal(ts_bytes.decode('utf-8'))
 
-        img_stream = BytesIO(img_bytes)
-        img_instance.image = PilImage.open(img_stream)
+        img_instance.image = img_bytes
 
         return img_instance
 
