@@ -288,8 +288,7 @@ class Image(TimestampMixin):
         img_instance = cls()
         img_instance.timestamp = Decimal(ts_bytes.decode('utf-8'))
 
-        img_stream = BytesIO(img_bytes)
-        img_instance.image = PilImage.open(img_stream)
+        img_instance.image = img_bytes
 
         return img_instance
 
@@ -369,7 +368,7 @@ class Points(TimestampMixin):
             Points: The deserialized Points object.
         """
         pts_bytes, data = read_data_block(data)
-        
+
         decompressor = zstd.ZstdDecompressor()
         pts_bytes_uncompressed = decompressor.decompress(pts_bytes)
 

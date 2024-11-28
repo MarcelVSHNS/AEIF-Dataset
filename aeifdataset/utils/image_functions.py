@@ -197,7 +197,8 @@ def save_image(image: Union['Image', PilImage.Image], output_path: str, filename
 
     os.makedirs(output_path, exist_ok=True)
     output_file = os.path.join(output_path, f'{filename}.{ext}')
-    image.save(output_file, format=dtype)
+    with open(output_file, 'wb') as file:
+        file.write(image)
 
 
 def save_all_images_in_frame(frame, output_path: str, create_subdir: bool = True, use_raw: bool = False,

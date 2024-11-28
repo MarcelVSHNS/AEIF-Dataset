@@ -48,23 +48,11 @@ def flat_distance(lat1, lon1, lat2, lon2):
 
 
 if __name__ == '__main__':
-    save_dir = '/mnt/dataset/anonymisation/validation/27_09_seq_1/png'
-    dataset = ad.Dataloader("/mnt/hot_data/dataset/seq_1_maille")
+    save_dir = '/mnt/cold_data/anonymisation/training/seq_8'
+    dataset = ad.Dataloader("/mnt/hot_data/dataset/seq_8_dhbw")
     frame = DataRecord('/mnt/hot_data/dataset/seq_1_maille/id00999_2024-09-27_10-35-41.4mse')[14]
 
-    points = []
-    points_color = []
-
-    for _, camera in frame.vehicle.cameras:
-        for _, lidar in frame.vehicle.lidars:
-            pts_3d, proj_2d, color = ad.get_rgb_projection(lidar, camera)
-            if pts_3d.size > 0:
-                points.append(ad.transform_points_to_origin((pts_3d, lidar.info)))
-                points_color.append(color)
-
-    points = np.vstack(points)
-    points_color = np.vstack(points_color)
-    print('')
+    ad.save_dataset_images_multithreaded(dataset, save_dir, use_raw=True, dtype='jpeg', num_cores=10)
 
     # Save one image as png or jpeg. Optional suffix can be applied.
     # ad.save_image(camera.image.image, output_path, f'{camera.image.get_timestamp()}_{camera_name}', dtype='jpeg')
